@@ -135,27 +135,28 @@ class ConvolutionalNetwork:
         y4 = np.dot(activated_y3, self.w4) + self.b4
         result = self.softmax(y4)
 
-        return activated_y1, activated_y2, activated_y3, result, max_loc_y1, max_loc_y2
+        return activated_y1, activated_y2, activated_y3, result, pooling_y1, pooling_y2, max_loc_y1, max_loc_y2, flatten_y1, flatten_y2
 
-    def backpropagation(self, x, labelY, out1, out2, out3, out4, max_loc_y1, max_loc_y2, flatten_y1, flatten_y2):
+    def backpropagation(self, x, labelY, activated_y1, activated_y2, activated_y3, result, pooling_y1, pooling_y2,
+                        max_loc_y1, max_loc_y2, flatten_y1, flatten_y2):
 
         # POINT : soft max layer.
         #
         # NOTICE : softmax back.
-        error_back = (out4 - labelY) / len(x)  # divided by batch size.
+        error_back = (result - labelY) / len(x)  # divided by batch size.
 
         # POINT : fully connected layer.
         #
         # NOTICE : fully weight 4 back.
-        d_w4 = np.dot(out3.T, error_back)
+        d_w4 = np.dot(activated_y3.T, error_back)
         d_b4 = np.sum(error_back, axis=0)
         error_back = np.dot(error_back, self.w4.T)
 
         # NOTICE : ReLU back.
-        error_back = self.back_relu(out3)
+        error_back = self.back_relu(activated_y3)
         # NOTICE : fully weight 3 back.
         # output x is 4d array, so change the shape.
-        d_w3 = np.dot(out2.reshape(x.shape[0], -1).T, error_back)
+        d_w3 = np.dot(pooling_y2.reshape(x.shape[0], -1).T, error_back)
         d_b3 = np.sum(error_back, axis=0)
         error_back = np.dot(error_back, self.w3.T)
 
@@ -169,44 +170,62 @@ class ConvolutionalNetwork:
         flated_pool[np.arange(len(max_loc_y2)), max_loc_y2.flatten()] = error_back.flatten()
         flated_pool = flated_pool.reshape(error_back.shape + (4,))
         flated_pool = flated_pool.reshape(flated_pool.shape[0] * flated_pool.shape[1] * flated_pool.shape[2], -1)
-        error_back = self.Col2Im(flated_pool, [len(error_back), 16, 16, 32], 2, 2, stride=2, pad=0)
+        error_back = self.Col2Im(flated_pool, [len(x), 16, 16, 32], 2, 2, stride=2, pad=0)
 
         # NOTICE: Relu back.
-        error_back = self.back_relu(out2)*error_back ################33333333
+        error_back = self.back_relu(activated_y2) * error_back  ################33333333
         # NOTICE : convolution 2 back.
-        error_back = error_back.reshape([-1, len(self.w2)])
+        error_back = error_back.reshape([-1, self.w2.shape[-1]])
         d_w2 = np.dot(flatten_y2.T, error_back)
-        d_w2 = np.transpose(d_w2.transpose([1, 0]).reshape([32, 16, 3, 3]), [0, 2, 3, 1])
+        d_w2 = np.transpose(d_w2.transpose([1, 0]).reshape([32, 16, 3, 3]), [2, 3, 1, 0])
         d_b2 = np.sum(error_back, axis=0)
+        flat_conv = np.dot(error_back, (self.w2.reshape(32, -1).T).T)
+        error_back = self.Col2Im(flat_conv, [len(x), 16, 16, 16], 3, 3, stride=1, pad=1)
 
         # NOTICE : pooling back.
         # un flat.
         error_back = error_back.reshape([-1, 16, 16, 16])
         # flated pooling
         flated_pool = np.zeros((error_back.size, 4))
-        flated_pool[np.arange(len(max_loc_y2)), max_loc_y2.flatten()] = error_back.flatten()
+        flated_pool[np.arange(len(max_loc_y1)), max_loc_y1.flatten()] = error_back.flatten()
         flated_pool = flated_pool.reshape(error_back.shape + (4,))
         flated_pool = flated_pool.reshape(flated_pool.shape[0] * flated_pool.shape[1] * flated_pool.shape[2], -1)
-        error_back = self.Col2Im(flated_pool, [len(error_back), 32, 32, 16], 2, 2, stride=2, pad=0)
+        error_back = self.Col2Im(flated_pool, [len(x), 32, 32, 16], 2, 2, stride=2, pad=0)
         # channel is not changed.
 
         # NOTICE: Relu back.
-        error_back = self.back_relu(out2)*error_back ################33333333
-        # NOTICE : convolution 2 back.
-        error_back = error_back.reshape([-1, len(self.w2)])
-        d_w2 = np.dot(flatten_y2.T, error_back)
-        d_w2 = np.transpose(d_w2.transpose([1, 0]).reshape([32, 16, 3, 3]), [0, 2, 3, 1])
-        d_b2 = np.sum(error_back, axis=0)
+        error_back = self.back_relu(activated_y1) * error_back  ################33333333
+        # NOTICE : convolution 1 back.
+        error_back = error_back.reshape([-1, self.w1.shape[-1]])
+        d_w1 = np.dot(flatten_y1.T, error_back)
+        d_w1 = np.transpose(d_w1.transpose([1, 0]).reshape([16, 3, 3, 3]), [2, 3, 1, 0])
+        d_b1 = np.sum(error_back, axis=0)
 
-        pass
-        # return d_w1, d_w2, d_w3, d_w4, d_b1, d_b2, d_b3, d_b4
+        return d_w1, d_w2, d_w3, d_w4, d_b1, d_b2, d_b3, d_b4
+
+    def update_weight(self, d_w1, d_w2, d_w3, d_w4, d_b1, d_b2, d_b3, d_b4):
+        self.w1 -= self.LEARNING_RATE * d_w1
+        self.w2 -= self.LEARNING_RATE * d_w2
+        self.w3 -= self.LEARNING_RATE * d_w3
+        self.w4 -= self.LEARNING_RATE * d_w4
+        self.b1 -= self.LEARNING_RATE * d_b1
+        self.b2 -= self.LEARNING_RATE * d_b2
+        self.b3 -= self.LEARNING_RATE * d_b3
+        self.b4 -= self.LEARNING_RATE * d_b4
 
     # train model.
     def train(self, x, y):
-        activated_y1, activated_y2, activated_y3, result, max_loc_y1, max_loc_y2 = self.FeedForward(x)
-        self.backpropagation(x, y, activated_y1, activated_y2, activated_y3, result, max_loc_y1, max_loc_y2)
+        activated_y1, activated_y2, activated_y3, result, pooling_y1, pooling_y2, max_loc_y1, max_loc_y2, flatten_y1, flatten_y2 = self.FeedForward(
+            x)
+        d_w1, d_w2, d_w3, d_w4, d_b1, d_b2, d_b3, d_b4 = self.backpropagation(x, y, activated_y1, activated_y2,
+                                                                              activated_y3, result, pooling_y1,
+                                                                              pooling_y2, max_loc_y1,
+                                                                              max_loc_y2, flatten_y1, flatten_y2)
+        self.update_weight(d_w1, d_w2, d_w3, d_w4, d_b1, d_b2, d_b3, d_b4)
 
-        pass
+    def predict(self, input):
+        output = self.FeedForward(input)
+        return output[3]
 
     def getAccuracyAndLoss(self, output_of_model, output):
         accuracy = np.mean(np.equal(np.argmax(output_of_model, axis=1), np.argmax(output, axis=1)))
