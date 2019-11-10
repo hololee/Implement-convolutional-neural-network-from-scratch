@@ -1,7 +1,7 @@
 import numpy as np
 # my class
 import cnn.model
-# import cnn.tools as tool
+import cnn.tools as tool
 from cnn.model import ConvolutionalNetwork as network
 from cnn.datas import DataManager as data_manager
 
@@ -16,7 +16,8 @@ CONFIG = {'total_epoch': 3000,
           'batch_size': 60000,
           'learning_rate': 1e-4,
           'train_dataset_size': 60000,
-          'test_dataset_size': 10000}
+          'test_dataset_size': 10000
+          }
 
 # define network fcn.
 network_model = network(configure=CONFIG, filter_size=3, d1=16, d2=32, h1=64)

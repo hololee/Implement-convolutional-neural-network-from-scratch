@@ -222,6 +222,7 @@ class ConvolutionalNetwork:
                                                                               pooling_y2, max_loc_y1,
                                                                               max_loc_y2, flatten_y1, flatten_y2)
         self.update_weight(d_w1, d_w2, d_w3, d_w4, d_b1, d_b2, d_b3, d_b4)
+        pass
 
     def predict(self, input):
         output = self.FeedForward(input)
@@ -231,6 +232,6 @@ class ConvolutionalNetwork:
         accuracy = np.mean(np.equal(np.argmax(output_of_model, axis=1), np.argmax(output, axis=1)))
 
         # cross entropy loss
-        loss = -np.mean(output * np.log(output_of_model) + (1 - output) * np.log(1 - output_of_model))
+        loss = -np.mean(output * np.log(output_of_model + 1e-7) + (1 - output) * np.log((1 - output_of_model) + 1e-7))
 
         return accuracy, loss
