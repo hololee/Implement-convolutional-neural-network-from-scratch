@@ -33,9 +33,9 @@ for i in range(network_model.TOTAL_EPOCH):
 
         # train model.
         network_model.train(batch_x, batch_y)
-        print("batch{} data trained".format(j))
 
         if j % 10 == 0:
+            print("batch{} data trained".format(j))
             # save data.
             # calculate accuracy and loss
             output_train = network_model.predict(dataManager.train_X)
@@ -68,6 +68,6 @@ for i in range(network_model.TOTAL_EPOCH):
     print("train accuracy : {:.4}; loss : {:.3}, test accuracy : {:.3}; loss : {:.3}".format(accuracy_train, loss_train,
                                                                                              accuracy_test, loss_test))
 
-    if i % 10 == 0 or i == network_model.TOTAL_EPOCH - 1:
-        # draw graph.
-        tool.plotting(CONFIG['learning_rate'], train_acc, train_err, valid_acc, valid_err)
+
+    # draw graph.
+    tool.plotting(CONFIG['learning_rate'], train_acc, train_err, valid_acc, valid_err)
