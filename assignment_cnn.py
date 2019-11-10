@@ -1,6 +1,5 @@
 import numpy as np
 # my class
-import cnn.model
 import cnn.tools as tool
 from cnn.model import ConvolutionalNetwork as network
 from cnn.datas import DataManager as data_manager
@@ -13,8 +12,8 @@ valid_err = []
 
 # config list.
 CONFIG = {'total_epoch': 3000,
-          'batch_size': 60000,
-          'learning_rate': 1e-4,
+          'batch_size': 1000,
+          'learning_rate': 1e-3,
           'train_dataset_size': 60000,
           'test_dataset_size': 10000
           }
@@ -22,8 +21,6 @@ CONFIG = {'total_epoch': 3000,
 # define network fcn.
 network_model = network(configure=CONFIG, filter_size=3, d1=16, d2=32, h1=64)
 dataManager = data_manager()
-
-network_model.train(dataManager.test_X[0:2], dataManager.test_y[0:2])
 
 # using mini-batch
 for i in range(network_model.TOTAL_EPOCH):
@@ -36,6 +33,7 @@ for i in range(network_model.TOTAL_EPOCH):
 
         # train model.
         network_model.train(batch_x, batch_y)
+        print("batch{} data trained".format(j))
 
         if j % 10 == 0:
             # save data.

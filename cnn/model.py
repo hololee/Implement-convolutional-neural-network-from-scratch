@@ -153,7 +153,7 @@ class ConvolutionalNetwork:
         error_back = np.dot(error_back, self.w4.T)
 
         # NOTICE : ReLU back.
-        error_back = self.back_relu(activated_y3)
+        error_back = self.back_relu(activated_y3) * error_back
         # NOTICE : fully weight 3 back.
         # output x is 4d array, so change the shape.
         d_w3 = np.dot(pooling_y2.reshape(x.shape[0], -1).T, error_back)
@@ -173,7 +173,7 @@ class ConvolutionalNetwork:
         error_back = self.Col2Im(flated_pool, [len(x), 16, 16, 32], 2, 2, stride=2, pad=0)
 
         # NOTICE: Relu back.
-        error_back = self.back_relu(activated_y2) * error_back  ################33333333
+        error_back = self.back_relu(activated_y2) * error_back
         # NOTICE : convolution 2 back.
         error_back = error_back.reshape([-1, self.w2.shape[-1]])
         d_w2 = np.dot(flatten_y2.T, error_back)
@@ -194,7 +194,7 @@ class ConvolutionalNetwork:
         # channel is not changed.
 
         # NOTICE: Relu back.
-        error_back = self.back_relu(activated_y1) * error_back  ################33333333
+        error_back = self.back_relu(activated_y1) * error_back
         # NOTICE : convolution 1 back.
         error_back = error_back.reshape([-1, self.w1.shape[-1]])
         d_w1 = np.dot(flatten_y1.T, error_back)
