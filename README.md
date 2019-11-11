@@ -15,8 +15,31 @@ This project is make pure Convolution Neural Network **without any deeplearning 
   │   │
   │   └─ -tools.py : Plotting tools.
   │
+  ├─ -normal_network_test : fully conncted network for comparing with CNN
+  │
   └─ -assignment_cnn.py : Main SCRIPT of this project.
 ~~~
+  
+---  
+<h3>Special methods</h3>
+
+**1. Im2Col()**  
+This function make image array to special array. Normal convolution is using a lot of `for-loops` and this make the network slow.
+But there are way that make the normal convolution to matrix multiplication.  
+**It is fast, but need more memory.** Many Deep-learning platform using this method for calculate convolution.     
+Structure of special array looks like below image.  
+![Structure of converted array by Im2Col](.images/)  
+  
+Below means calculation of output width and height.
+~~~
+W_Out = ((W_in -W_filter + 2*Padding)/Stride + 1)
+H_Out = ((H_in -H_filter + 2*Padding)/Stride + 1)
+~~~  
+
+**2. Col2Im()**  
+This function make special array that is flatted for calculation to image array. When the error is backpropagated, the row col can be conveted to image array.  
+![Structure of converted array by Col2Im](.images/)  
+
   
 ---  
 <h3>Structure of Network</h3>
@@ -44,27 +67,6 @@ The pooling(Max-pooling in this Network) reduce the image size.
 
 5. **FeedFoward and backpropagation of Fully Connected and Softmax Layer**  
 Same as the Normal Neural Network's layer.  
-
-  
----  
-<h3>Special methods</h3>
-
-**1. Im2Col()**  
-This function make image array to special array. Normal convolution is using a lot of `for-loops` and this make the network slow.
-But there are way that make the normal convolution to matrix multiplication.  
-**It is fast, but need more memory.** Many Deep-learning platform using this method for calculate convolution.     
-Structure of special array looks like below image.  
-![Structure of converted array by Im2Col](.images/)  
-  
-Below means calculation of output width and height.
-~~~
-W_Out = ((W_in -W_filter + 2*Padding)/Stride + 1)
-H_Out = ((H_in -H_filter + 2*Padding)/Stride + 1)
-~~~  
-
-**2. Col2Im()**  
-This function make special array that is flatted for calculation to image array. When the error is backpropagated, the row col can be conveted to image array.
-![Structure of converted array by Col2Im](.images/)  
 
   
 ---
@@ -95,8 +97,27 @@ train accuracy : 0.3189; loss : 0.281, test accuracy : 0.322; loss : 0.28
  
  
  ---
- <h3>Compare with Fully Connected Network  
+ <h3>Comparing with Fully Connected Network  
  (Cifar10 Dataset)</h3>  
+ Below plotting graph is train of normal fully connected neural network.
+ ~~~
+ ============== EPOCH 89 START ==============
+============== EPOCH 89 END ================
+train accuracy : 0.2565; loss : 0.322, test accuracy : 0.247; loss : 0.338
+============== EPOCH 90 START ==============
+============== EPOCH 90 END ================
+train accuracy : 0.2574; loss : 0.318, test accuracy : 0.247; loss : 0.333
+ ~~~
+ ![Cifar10 result](./images/result_NN.png)  
+  
+---
+- This is the comparing table(at Epoch:90).  
+- Normal Neural Network using Adam optimizer, Convolution Neural Network using Gradient Descent.
 
-
+|           \             | Normal Neural network(*ADAM*) | Convolution Neural Network(*GD*)|
+|:-----------------------:|:---------------------:|:-------------------------:|
+|   **Train accuracy**    |        25.74%         |         **31.89%**        |        
+|     **Train loss**      |          0.318        |              0.281        |      
+|   **Test accuracy**     |           24.7%       |          **32.2%**        |        
+|      **Test loss**      |         0.333         |               0.28        |  
  
