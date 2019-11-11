@@ -78,7 +78,8 @@ Same as the Normal Neural Network's layer.
 (Cifar10 Dataset)</h3>  
 
 I used the `cross-entropy` loss and `mini-batch Gradient Descent`.  
-And Train network for *100* epochs, Each epoch run for *50* iterations. (Used batch size *1,000*)  
+And Train network for *90* epochs, Each epoch run for *50* iterations. (Used batch size *1,000*)  
+I spent more than 12 hours.  
 
 ~~~
 ============== EPOCH 89 START ==============
