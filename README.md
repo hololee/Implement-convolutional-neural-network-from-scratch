@@ -4,7 +4,8 @@
 This project is make pure Convolution Neural Network **without any deeplearning library**.  
 
 
-<h3>Structure of project</h3>
+<h3>Structure of project</h3>  
+
 ~~~  
 -cnn_scratch : 
   ├─ -cnn : packge of cnn.
