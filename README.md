@@ -120,9 +120,9 @@ train accuracy : 0.2574; loss : 0.318, test accuracy : 0.247; loss : 0.333
 ---  
 
 - This is the comparing table(at Epoch:90).  
-- Normal Neural Network using Adam optimizer, Convolution Neural Network using Gradient Descent.
+- Normal Neural Network using `Adam` optimizer, Convolution Neural Network using `Gradient Descent`.
 
-|           \             | Normal Neural network(*ADAM*) | Convolution Neural Network(*GD*)|
+|           \             | Normal Neural network(`ADAM`) | Convolution Neural Network(`GD`)|
 |:-----------------------:|:---------------------:|:-------------------------:|
 |   **Train accuracy**    |        25.74%         |         **31.89%**        |        
 |     **Train loss**      |          0.318        |              0.281        |      
