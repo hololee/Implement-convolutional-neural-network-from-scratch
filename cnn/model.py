@@ -58,6 +58,7 @@ class ConvolutionalNetwork:
                 x_max = x + stride * out_w
                 # NOTICE : transpose for calculation.
                 col[:, :, y, x, :, :] = np.transpose(img[:, y:y_max:stride, x:x_max:stride, :], [0, 3, 1, 2])
+                # (1000, 3, 32, 32)
 
         col = np.reshape(col.transpose([0, 4, 5, 1, 2, 3]), [N * out_h * out_w, -1])
         return col

@@ -28,7 +28,7 @@ This function make image array to special array. Normal convolution is using a l
 But there are way that make the normal convolution to matrix multiplication.  
 **It is fast, but need more memory.** Many Deep-learning platform using this method for calculate convolution.     
 Structure of special array looks like below image.  
-![Structure of converted array by Im2Col](.images/)  
+![Structure of converted array by Im2Col](images/im2col_cnn_hand.png)  
   
 Below means calculation of output width and height.
 ~~~
@@ -38,7 +38,7 @@ H_Out = ((H_in -H_filter + 2*Padding)/Stride + 1)
 
 **2. Col2Im()**  
 This function make special array that is flatted for calculation to image array. When the error is backpropagated, the row col can be conveted to image array.  
-![Structure of converted array by Col2Im](.images/)  
+![Structure of converted array by Col2Im](./images/)  
 
   
 ---  
@@ -53,17 +53,17 @@ In this layer, Filter moved pixels of stride at once(Check the below image) and 
 Depending on the filter depth(means number of filters), image channels are changed.  
 `OUT_Height = (INPUT_Height + 2*Padding - filter_Height)/Stride + 1`  
 `OUT_width = (INPUT_Width + 2*Padding - filter_Width)/Stride + 1`  
-![Feedforward of Conv layer](.images/)    
+![Feedforward of Conv layer](images/im2col_hand.png)    
 
 2. **FeedForward of Conv Layer**   
 The pooling(Max-pooling in this Network) reduce the image size.  
-![Feedforward of Pooling layer](.images/)  
+![Feedforward of Pooling layer](./images/)  
 
 3. **Backpropagation of Conv Layer**   
-![Backpropagation of Conv layer](.images/)    
+![Backpropagation of Conv layer](./images/)    
 
 4. **Backpropagation of Conv Layer**   
-![Backpropagation of Pooling layer](.images/)  
+![Backpropagation of Pooling layer](./images/)  
 
 5. **FeedFoward and backpropagation of Fully Connected and Softmax Layer**  
 Same as the Normal Neural Network's layer.  
