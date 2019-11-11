@@ -222,7 +222,6 @@ class ConvolutionalNetwork:
                                                                               pooling_y2, max_loc_y1,
                                                                               max_loc_y2, flatten_y1, flatten_y2)
         self.update_weight(d_w1, d_w2, d_w3, d_w4, d_b1, d_b2, d_b3, d_b4)
-        pass
 
     def predict(self, input):
         output = self.FeedForward(input)

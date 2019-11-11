@@ -11,7 +11,7 @@ valid_acc = []
 valid_err = []
 
 # config list.
-CONFIG = {'total_epoch': 3000,
+CONFIG = {'total_epoch': 90,
           'batch_size': 1000,
           'learning_rate': 1e-3,
           'train_dataset_size': 60000,
@@ -56,7 +56,6 @@ for i in range(network_model.TOTAL_EPOCH):
 
     # shake data when epoch ended.
     # dataManager.shake_data()
-
     # calculate accuracy and loss
     output_train = network_model.predict(dataManager.train_X)
     accuracy_train, loss_train = network_model.getAccuracyAndLoss(output_train, dataManager.train_y)
@@ -67,7 +66,6 @@ for i in range(network_model.TOTAL_EPOCH):
 
     print("train accuracy : {:.4}; loss : {:.3}, test accuracy : {:.3}; loss : {:.3}".format(accuracy_train, loss_train,
                                                                                              accuracy_test, loss_test))
-
 
     # draw graph.
     tool.plotting(CONFIG['learning_rate'], train_acc, train_err, valid_acc, valid_err)
