@@ -45,7 +45,8 @@ This function make special array that is flatted for calculation to image array.
   
 ---  
 
-<h3>Structure of Network</h3>
+<h3>Structure of Network</h3>  
+
 This Network can be divided into *3 parts*.  
 - `Convolution` Layer & Activation & `Pooling`
 - Fully Connected Layer 
