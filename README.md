@@ -78,7 +78,8 @@ Same as the Normal Neural Network's layer.
 (Cifar10 Dataset)</h3>  
 
 I used the `cross-entropy` loss and `mini-batch Gradient Descent`.  
-And Train network for *100* epochs, Each epoch run for *50* iterations. (Used batch size *1,000*)
+And Train network for *100* epochs, Each epoch run for *50* iterations. (Used batch size *1,000*)  
+
 ~~~
 ============== EPOCH 89 START ==============
 batch0 data trained
@@ -104,7 +105,8 @@ train accuracy : 0.3189; loss : 0.281, test accuracy : 0.322; loss : 0.28
  
  <h3>Comparing with Fully Connected Network  
  (Cifar10 Dataset)</h3>  
- Below plotting graph is train of normal fully connected neural network.
+ Below plotting graph is train of normal fully connected neural network.  
+ 
  ~~~
  ============== EPOCH 89 START ==============
 ============== EPOCH 89 END ================
