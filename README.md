@@ -22,6 +22,7 @@ This project is make pure Convolution Neural Network **without any deeplearning 
 ~~~
   
 ---  
+
 <h3>Special methods</h3>
 
 **1. Im2Col()**  
@@ -43,6 +44,7 @@ This function make special array that is flatted for calculation to image array.
 
   
 ---  
+
 <h3>Structure of Network</h3>
 This Network can be divided into *3 parts*.  
 - `Convolution` Layer & Activation & `Pooling`
@@ -70,7 +72,8 @@ The pooling(Max-pooling in this Network) reduce the image size.
 Same as the Normal Neural Network's layer.  
 
   
----
+---  
+
 <h3>Result of CNN  
 (Cifar10 Dataset)</h3>  
 
@@ -97,7 +100,8 @@ train accuracy : 0.3189; loss : 0.281, test accuracy : 0.322; loss : 0.28
 ![Cifar10 result](./images/result_epoch.png)  
  
  
- ---
+ ---  
+ 
  <h3>Comparing with Fully Connected Network  
  (Cifar10 Dataset)</h3>  
  Below plotting graph is train of normal fully connected neural network.
@@ -111,7 +115,8 @@ train accuracy : 0.2574; loss : 0.318, test accuracy : 0.247; loss : 0.333
  ~~~
  ![Cifar10 result](./images/result_NN.png)  
   
----
+---  
+
 - This is the comparing table(at Epoch:90).  
 - Normal Neural Network using Adam optimizer, Convolution Neural Network using Gradient Descent.
 
