@@ -143,8 +143,7 @@ train accuracy : 0.2565; loss : 0.322, test accuracy : 0.247; loss : 0.338
 train accuracy : 0.2574; loss : 0.318, test accuracy : 0.247; loss : 0.333
  ~~~
  ![Cifar10 result](./images/result_NN.png)  
-  
----  
+    
 
 - This is the comparing table(at Epoch:90).  
 - Normal Neural Network using `Adam` optimizer, Convolution Neural Network using `Gradient Descent`.
